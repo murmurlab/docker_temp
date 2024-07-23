@@ -1,0 +1,41 @@
+name: 1ncepti0n
+# Of course, using network: host or --link or links: is forbidden.
+services:
+  db:
+    build: ./requirements/mysql
+    ports:
+    - "8000:5000"
+    volumes:
+    - db-data:/var/db/:rw
+
+    # - type: bind
+    #   source: /home/ahbasara/data/db
+    #   target: /var/db
+
+    # - /home/ahbasara/data/db:/var/db
+  # wordpress:
+  #   build: ./requirements/wordpress
+  #   ports:
+  #     - "8000:5000"
+  nginx:
+    build: ./requirements/nginx
+    ports:
+      - "443:443"
+    volumes:
+    - wp-data:/var/wp/:rw
+
+volumes:
+  db-data:
+    name: "db-volume"
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: /home/ahbasara/data/db
+  wp-data:
+    name: "wp-volume"
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: /home/ahbasara/data/wp
