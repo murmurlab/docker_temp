@@ -13,22 +13,32 @@ services:
     #   target: /var/db
 
     # - /home/ahbasara/data/db:/var/db
-  # wordpress:
-  #   build: ./requirements/wordpress
-  #   ports:
-  #     - "8000:5000"
+  wordpress:
+    build: ./requirements/wordpress
+    ports:
+      - "9000:9000"
+    volumes:
+      - wp-data:/var/wp/:rw
+    networks:
+      - net1
   nginx:
     build: ./requirements/nginx
     ports:
       - "443:443"
+      - "80:80"
     volumes:
-    - wp-data:/var/wp/:rw
+      - wp-data:/var/wp/:rw
+    networks:
+      - net1
   ftp:
     build: ./requirements/ftp
     ports:
       - "21:21"
     volumes:
     - wp-data:/var/wp/:rw
+
+networks:
+  net1:
 
 volumes:
   db-data:
