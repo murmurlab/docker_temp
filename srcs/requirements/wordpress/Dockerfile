@@ -3,7 +3,7 @@ FROM alpine:3.20
 # EXPOSE 9000/tcp
 
 RUN apk add --no-cache php83-fpm php83-mysqli
-EXPOSE 9000/tcp
+# EXPOSE 9000/tcp
 # q mkdir /etc/nginx/sites-available
 
 # COPY tools/default.conf /etc/nginx/http.d/default.conf
