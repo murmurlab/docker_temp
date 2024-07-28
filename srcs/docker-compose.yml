@@ -3,8 +3,8 @@ name: 1ncepti0n
 services:
   db:
     build: ./requirements/mysql
-    ports:
-    - "8000:5000"
+    # ports:
+    # - "8000:5000"
     volumes:
     - db-data:/var/db/:rw
 
@@ -17,6 +17,8 @@ services:
     build: ./requirements/wordpress
     ports:
       - "9000:9000"
+    expose:
+      - "9000"
     volumes:
       - wp-data:/var/wp/:rw
     networks:
@@ -39,6 +41,7 @@ services:
 
 networks:
   net1:
+    driver: bridge
 
 volumes:
   db-data:
