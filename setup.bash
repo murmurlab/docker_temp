@@ -20,5 +20,5 @@ mkdir -p /home/ahbasara/data/wp
 mkdir -p /home/ahbasara/data/db
 mkdir -p ~/sources/repos
 
-git clone git@github.com:murmurlab/docker_temp.git ~/sources/repos/docker_temp
+git clone https://github.com/murmurlab/docker_temp.git ~/sources/repos/docker_temp
 
