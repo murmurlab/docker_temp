@@ -1,17 +1,10 @@
-sudo zypper install make docker-compose docker git
-
 #!/bin/bash
+zypper install -y make docker-compose docker git
 
-# SSH portunu etkinleştir
-sudo firewall-cmd --permanent --zone=public --add-port=22/tcp
-
-# 80 ve 443 numaralı portları etkinleştir
-sudo firewall-cmd --permanent --zone=public --add-port=80/tcp
-sudo firewall-cmd --permanent --zone=public --add-port=443/tcp
-
-# Değişiklikleri uygula
-sudo firewall-cmd --reload
-
+firewall-cmd --permanent --zone=public --add-port=22/tcp
+firewall-cmd --permanent --zone=public --add-port=80/tcp
+firewall-cmd --permanent --zone=public --add-port=443/tcp
+firewall-cmd --reload
 
 systemctl start docker
 systemctl enable docker
@@ -20,7 +13,6 @@ systemctl enable sshd
 
 mkdir -p /home/ahbasara/data/wp
 mkdir -p /home/ahbasara/data/db
-mkdir -p ~/sources/repos
+mkdir -p "$1/sources/repos"
 
-git clone https://github.com/murmurlab/docker_temp.git ~/sources/repos/docker_temp
-
+git clone https://github.com/murmurlab/docker_temp.git "$1/sources/repos/docker_temp"
