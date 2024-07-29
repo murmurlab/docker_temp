@@ -15,3 +15,10 @@ sudo firewall-cmd --reload
 
 systemctl start docker
 systemctl enable docker
+
+mkdir -p /home/ahbasara/data/wp
+mkdir -p /home/ahbasara/data/db
+mkdir -p ~/sources/repos
+
+git clone git@github.com:murmurlab/docker_temp.git ~/sources/repos/docker_temp
+
