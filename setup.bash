@@ -15,6 +15,8 @@ sudo firewall-cmd --reload
 
 systemctl start docker
 systemctl enable docker
+systemctl start sshd
+systemctl enable sshd
 
 mkdir -p /home/ahbasara/data/wp
 mkdir -p /home/ahbasara/data/db
