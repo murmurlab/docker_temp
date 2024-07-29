@@ -1,11 +1,13 @@
 FROM alpine:3.20
 
-# EXPOSE 9000/tcp
+EXPOSE 9000/tcp
 
-RUN apk add --no-cache php83-fpm php83-mysqli
+RUN apk add --no-cache php83-fpm php83-mysqli curl mysql-client
 # EXPOSE 9000/tcp
 # q mkdir /etc/nginx/sites-available
 
+RUN curl -L -o /tmp/latest.zip https://wordpress.org/latest.zip
+RUN unzip -o -d /var/wp /tmp/latest.zip
 # COPY tools/default.conf /etc/nginx/http.d/default.conf
 COPY tools/www.conf /etc/php83/php-fpm.d/www.conf
 COPY tools/fix.sh /fix.sh

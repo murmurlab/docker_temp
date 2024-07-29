@@ -7,7 +7,9 @@
 
 # this is only for the mysqld standalone daemon
 [mysqld]
-skip-networking
+port=9393
+bind-address=0.0.0.0
+#skip-networking
 datadir=/var/db/mariadbd/
 # Galera-related settings
 [galera]

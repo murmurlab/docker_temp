@@ -37,21 +37,31 @@ all:
 
 
 $(NAME):
-	sudo docker-compose -f srcs/docker-compose.yml up
+	mkdir -p /home/ahbasara/data/wp
+	mkdir -p /home/ahbasara/data/db
+	$(MAKE) up
+up:
+	docker-compose -f srcs/docker-compose.yml up
+force:
+	docker-compose -f srcs/docker-compose.yml up --force-recreate --build
 
 run: all
 	@echo "===================================program======================================\n"
 
 clean-con:
-	@if [[ `sudo docker ps -aq` ]]; then  sudo docker ps -aq | xargs sudo docker stop; else echo "already clean"; fi
-	@if [[ `sudo docker ps -aq` ]]; then  sudo docker ps -aq | xargs sudo docker rm; else echo "already clean"; fi
+	@if [[ `docker ps -aq` ]]; then  docker ps -aq | xargs docker stop; else echo "already clean"; fi
+	@if [[ `docker ps -aq` ]]; then  docker ps -aq | xargs docker rm; else echo "already clean"; fi
 clean-img:
-	@if [[ `sudo docker images -aq` ]]; then sudo docker images -aq | xargs sudo docker rmi; else echo "already clean"; fi
+	@if [[ `docker images -aq` ]]; then docker images -aq | xargs docker rmi; else echo "already clean"; fi
+down:
+	docker-compose -f srcs/docker-compose.yml down
 
 fclean: clean-con clean-img
 
 re: fclean
-	$(MAKE) all
+	rm -rf /home/ahbasara/data/db/mariadbd/
+	$(MAKE) force
+	# $(MAKE) all
 
 # @mkdir -p $(BIN_DIR)
 # @$(CC) $(CFLAGS) $(INC_DIR) test/testing.c test/token_test.c test/dollar_test.c test/equal_primitive.c $(SRCS) -o bin/test

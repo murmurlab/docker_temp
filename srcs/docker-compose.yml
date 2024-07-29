@@ -2,6 +2,7 @@ name: 1ncepti0n
 # Of course, using network: host or --link or links: is forbidden.
 services:
   db:
+    hostname: db
     build: ./requirements/mysql
     # ports:
     # - "8000:5000"
@@ -13,9 +14,9 @@ services:
     # - type: bind
     #   source: /home/ahbasara/data/db
     #   target: /var/db
-
     # - /home/ahbasara/data/db:/var/db
   wordpress:
+    hostname: wp
     build: ./requirements/wordpress
     # ports:
     #   - "9000:9000"
@@ -27,10 +28,10 @@ services:
       - nginx-net
       - db-net
   nginx:
+    hostname: ng
     build: ./requirements/nginx
     ports:
       - "443:443"
-      - "80:80"
     volumes:
       - wp-data:/var/wp/:rw
     networks:
