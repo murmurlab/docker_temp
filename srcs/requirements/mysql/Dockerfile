@@ -1,9 +1,13 @@
 FROM alpine:3.20
 RUN apk add --no-cache mysql mysql-client
 COPY tools/mysql.cnf etc/my.cnf.d/mariadb-server.cnf
+COPY tools/setup.sh /root/setup.sh
 RUN mkdir -p /var/db/mariadbd
 RUN chmod -R 777 /var/db/mariadbd
 RUN mysql_install_db --user=mysql
+
+
+RUN cd /root && sh setup.sh
 # --basedir=/usr --datadir=/var/db/mariadbd/
 EXPOSE 9393
 # VOLUME ["/var/db"]

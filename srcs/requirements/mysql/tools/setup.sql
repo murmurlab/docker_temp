@@ -1,5 +1,5 @@
 CREATE DATABASE wp;
-CREATE USER "wordpressusername"@"hostname" IDENTIFIED BY "password";
-GRANT ALL PRIVILEGES ON wp.* TO "wordpressusername"@"hostname";
+CREATE USER ""@"hostname" IDENTIFIED BY "";
+GRANT ALL PRIVILEGES ON wp.* TO ""@"hostname";
 FLUSH PRIVILEGES;
 EXIT;
