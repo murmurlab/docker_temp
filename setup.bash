@@ -16,5 +16,7 @@ mkdir -p "$1/data/db"
 mkdir -p "$1/sources/repos"
 
 git clone https://github.com/murmurlab/docker_temp.git "$1/sources/repos/docker_temp"
+chown -R $2 "$1/sources/"
+chown -R $2 "$1/data/"
 
 sed -i "s/LOGIN_42=ahbasara/LOGIN_42=$2/" "$1/sources/repos/docker_temp/srcs/.env"
