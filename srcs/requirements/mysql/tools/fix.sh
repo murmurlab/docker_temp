@@ -1,5 +1,7 @@
-sed -i "s/bind-address=1.1.1.1/bind-address=$(getent hosts db | awk '{ print $1 }')/" /etc/my.cnf.d/mariadb-server.cnf
-sh /root/setup.sh > /root/setup.sql
-#mysql </root/setup.sql
-#cp /var/wp/wordpress/wp-config-sample.php 
-mariadbd-safe
+sed -i "s|.*bind-address\s*=.*|bind-address=$(getent hosts db | awk '{ print $1 }')|g" /etc/my.cnf.d/mariadb-server.cnf
+
+sh /root/setup.sh > /setup.sql
+# chown mysql /setup.sql
+chmod 777 /setup.sql
+
+mariadbd-safe --init-file=/setup.sql

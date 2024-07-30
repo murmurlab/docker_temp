@@ -1,16 +1,19 @@
-name: 1ncepti0n
-# Of course, using network: host or --link or links: is forbidden.
+name: inception
+
 services:
   db:
     hostname: db
     build: ./requirements/mysql
-    # ports:
-    # - "8000:5000"
     volumes:
       - db-data:/var/db/:rw
     networks:
       - db-net
-    env_file: "./.env"
+    # env_file: "./.env"
+    environment:
+    - WP_ADMIN_LOGIN=${WP_ADMIN_LOGIN}
+    - WP_ADMIN_PASSW=${WP_ADMIN_PASSW}
+    - WP_GUEST_LOGIN=${WP_GUEST_LOGIN}
+    - WP_GUEST_PASSW=${WP_GUEST_PASSW}
     # - type: bind
     #   source: /home/ahbasara/data/db
     #   target: /var/db
@@ -18,8 +21,6 @@ services:
   wordpress:
     hostname: wp
     build: ./requirements/wordpress
-    # ports:
-    #   - "9000:9000"
     expose:
       - "9000"
     volumes:
@@ -27,6 +28,11 @@ services:
     networks:
       - nginx-net
       - db-net
+    # env_file: "./.env"
+    environment:
+    - WP_DB_NAME=${WP_DB_NAME}
+    - WP_ADMIN_LOGIN=${WP_ADMIN_LOGIN}
+    - WP_ADMIN_PASSW=${WP_ADMIN_PASSW}
   nginx:
     hostname: ng
     build: ./requirements/nginx
@@ -56,11 +62,11 @@ volumes:
     driver_opts:
       type: 'none'
       o: 'bind'
-      device: /home/ahbasara/data/db
+      device: /home/${LOGIN_42}/data/db
   wp-data:
     name: "wp-volume"
     driver: local
     driver_opts:
       type: 'none'
       o: 'bind'
-      device: /home/ahbasara/data/wp
+      device: /home/${LOGIN_42}/data/wp
