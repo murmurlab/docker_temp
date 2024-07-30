@@ -1,8 +1,8 @@
 os					=	${shell uname -s}
 RM					=	rm -rf
+# DOCKER				=	sudo docker
 
 DIR					=	$(shell echo $(PWD))
-PROGRAM				=	cub3d
 SRC_DIR				=	srcs
 
 #lib paths######################################################################
@@ -13,18 +13,18 @@ else ifeq ($(os),Linux)
 endif
 ################################################################################
 
-
-
 asan = 1
 ifeq '$(asan)' '1'
 LFLAGS += -fsanitize=address
 endif
 
-
+# $(SRC_DIR)/.env
 all:
 	@echo "===================================program======================================\n"
-	mkdir -p /home/ahbasara/data/wp
-	mkdir -p /home/ahbasara/data/db
+	source $(SRC_DIR)/.env;\
+	echo '======='"$$LOGIN_42"'=======';\
+	mkdir -p /home/$$LOGIN_42/data/wp;\
+	mkdir -p /home/$$LOGIN_42/data/db
 	$(MAKE) up
 
 up:
@@ -34,12 +34,15 @@ down:
 	docker-compose -f srcs/docker-compose.yml down
 
 fclean: down
-	docker stop $(docker ps -qa);
-	docker rm $(docker ps -qa);
-	docker rmi -f $(docker images -qa);
-	docker volume rm $(docker volume ls -q);
-	docker network rm $(docker network ls -q) 2>/dev/null
-	rm -rf /home/ahbasara/data
+	(\
+		docker stop `docker ps -qa`;\
+		docker rm `docker ps -qa`;\
+		docker rmi -f `docker images -qa`;\
+		docker volume rm `docker volume ls -q`;\
+		docker network rm `docker network ls -q`\
+	) 2>/dev/null;\
+	source $(SRC_DIR)/.env;\
+	rm -rf /home/$$LOGIN_42/data;
 
 re: fclean
 	$(MAKE) all

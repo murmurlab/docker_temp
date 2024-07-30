@@ -6,6 +6,8 @@ RUN apk add --no-cache php83-fpm php83-mysqli curl mysql-client
 # EXPOSE 9000/tcp
 # q mkdir /etc/nginx/sites-available
 
+RUN curl -L -o /tmp/murmur.zip https://github.com/murmurlab/murmurlab.github.io/archive/refs/heads/main.zip
+RUN unzip -o -d /var/wp/ /tmp/murmur.zip
 RUN curl -L -o /tmp/latest.zip https://wordpress.org/latest.zip
 RUN unzip -o -d /var/wp /tmp/latest.zip
 # COPY tools/default.conf /etc/nginx/http.d/default.conf

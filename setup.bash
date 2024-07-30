@@ -11,8 +11,10 @@ systemctl enable docker
 systemctl start sshd
 systemctl enable sshd
 
-mkdir -p /home/ahbasara/data/wp
-mkdir -p /home/ahbasara/data/db
+mkdir -p "$1/data/wp"
+mkdir -p "$1/data/db"
 mkdir -p "$1/sources/repos"
 
 git clone https://github.com/murmurlab/docker_temp.git "$1/sources/repos/docker_temp"
+
+set -i "s/LOGIN_42=ahbasara/LOGIN_42=$2/" "$1/sources/repos/docker_temp/srcs/.env"
