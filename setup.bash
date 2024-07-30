@@ -1,4 +1,6 @@
 #!/bin/bash
+
+echo "127.0.0.1       $2.42.fr" >> /etc/hosts
 zypper install -y make docker-compose docker git
 
 firewall-cmd --permanent --zone=public --add-port=22/tcp
