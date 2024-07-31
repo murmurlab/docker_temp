@@ -1,5 +1,5 @@
 #!/bin/sh
-sed -i "s/^listen = 127.0.0.1/listen = $(getent hosts $(hostname) | awk '{ print $1 }')/" /etc/php83/php-fpm.d/www.conf
+sed -i "s/^listen = 127.0.0.1/listen = $(getent hosts wp | awk '{ print $1 }')/" /etc/php83/php-fpm.d/www.conf
 
 cp /var/wp/wordpress/wp-config-sample.php /var/wp/wordpress/wp-config-set.php
 

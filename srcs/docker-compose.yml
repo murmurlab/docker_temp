@@ -2,12 +2,14 @@ name: inception
 
 services:
   db:
-    hostname: db
+    # hostname: db
     build: ./requirements/mysql
     volumes:
       - db-data:/var/db/:rw
     networks:
-      - db-net
+      db-net:
+        aliases:
+          - db
     # env_file: "./.env"
     environment:
     - WP_ADMIN_LOGIN=${WP_ADMIN_LOGIN}
@@ -19,29 +21,35 @@ services:
     #   target: /var/db
     # - /home/ahbasara/data/db:/var/db
   wordpress:
-    hostname: wp
+    # hostname: wp
     build: ./requirements/wordpress
     expose:
       - "9000"
     volumes:
       - wp-data:/var/wp/:rw
     networks:
-      - nginx-net
-      - db-net
+      nginx-net:
+        aliases:
+          - wp
+      db-net:
+        aliases:
+          - wp_db
     # env_file: "./.env"
     environment:
     - WP_DB_NAME=${WP_DB_NAME}
     - WP_ADMIN_LOGIN=${WP_ADMIN_LOGIN}
     - WP_ADMIN_PASSW=${WP_ADMIN_PASSW}
   nginx:
-    hostname: ng
+    # hostname: ng
     build: ./requirements/nginx
     ports:
       - "443:443"
     volumes:
       - wp-data:/var/wp/:rw
     networks:
-      - nginx-net
+      nginx-net:
+        aliases:
+          - ng
   ftp:
     build: ./requirements/ftp
     ports:
