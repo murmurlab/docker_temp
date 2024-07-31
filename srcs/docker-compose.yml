@@ -50,12 +50,12 @@ services:
       nginx-net:
         aliases:
           - ng
-  ftp:
-    build: ./requirements/ftp
-    ports:
-      - "21:21"
-    volumes:
-    - wp-data:/var/wp/:rw
+  # ftp:
+  #   build: ./requirements/ftp
+  #   ports:
+  #     - "21:21"
+  #   volumes:
+  #   - wp-data:/var/wp/:rw
 
 networks:
   nginx-net:
