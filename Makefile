@@ -42,7 +42,7 @@ fclean: down
 		docker network rm `docker network ls -q`\
 	) 2>/dev/null;\
 	source $(SRC_DIR)/.env;\
-	rm -rf /home/$$LOGIN_42/data;
+	# rm -rf /home/$$LOGIN_42/data;
 
 re: fclean
 	$(MAKE) all
