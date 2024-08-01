@@ -1,4 +1,4 @@
-FROM alpine:3.20
+FROM alpine:3.19
 RUN apk add --no-cache mysql mysql-client
 # COPY tools/my.cnf /etc/my.cnf
 COPY tools/mysql.cnf etc/my.cnf.d/mariadb-server.cnf

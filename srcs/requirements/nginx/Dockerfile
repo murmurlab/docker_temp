@@ -1,4 +1,4 @@
-FROM alpine:3.20
+FROM alpine:3.19
 
 EXPOSE 80/tcp
 EXPOSE 443/tcp

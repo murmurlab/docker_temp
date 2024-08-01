@@ -1,9 +1,9 @@
 name: inception
 
 services:
-  db:
+  mariadb:
     # hostname: db
-    build: ./requirements/mysql
+    build: ./requirements/mariadb
     volumes:
       - db-data:/var/db/:rw
     networks:
