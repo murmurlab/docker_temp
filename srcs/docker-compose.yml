@@ -1,6 +1,16 @@
 name: inception
 
 services:
+  redis:
+    build: ./requirements/redis
+    volumes:
+      - wp-data:/var/wp/:rw
+    networks:
+      redis-net:
+        aliases:
+          - redis
+    ports:
+     - '6379:6379'
   mariadb:
     # hostname: db
     build: ./requirements/mariadb
@@ -10,19 +20,29 @@ services:
       db-net:
         aliases:
           - db
-    # env_file: "./.env"
-    environment:
-    - WP_ADMIN_LOGIN=${WP_ADMIN_LOGIN}
-    - WP_ADMIN_PASSW=${WP_ADMIN_PASSW}
-    - WP_GUEST_LOGIN=${WP_GUEST_LOGIN}
-    - WP_GUEST_PASSW=${WP_GUEST_PASSW}
+    secrets:
+      - WP_ADMIN_LOGIN
+      - WP_ADMIN_PASSW
+      - WP_GUEST_LOGIN
+      - WP_GUEST_PASSW
+      - WP_DB_NAME
     # - type: bind
     #   source: /home/ahbasara/data/db
     #   target: /var/db
     # - /home/ahbasara/data/db:/var/db
   wordpress:
     # hostname: wp
-    build: ./requirements/wordpress
+    build: 
+      context: ./requirements/wordpress
+      secrets:
+        - WP_ADMIN_LOGIN
+        - WP_ADMIN_PASSW
+        - WP_DB_NAME
+        - WP_GUEST_LOGIN
+        - WP_GUEST_PASSW
+    depends_on:
+     - mariadb
+
     expose:
       - "9000"
     volumes:
@@ -34,11 +54,16 @@ services:
       db-net:
         aliases:
           - wp_db
-    # env_file: "./.env"
-    environment:
-    - WP_DB_NAME=${WP_DB_NAME}
-    - WP_ADMIN_LOGIN=${WP_ADMIN_LOGIN}
-    - WP_ADMIN_PASSW=${WP_ADMIN_PASSW}
+      redis-net:
+        aliases:
+          - wp
+    secrets:
+      - WP_DB_NAME
+      - WP_ADMIN_LOGIN
+      - WP_ADMIN_PASSW
+      - WP_GUEST_LOGIN
+      - WP_GUEST_PASSW
+
   nginx:
     # hostname: ng
     build: ./requirements/nginx
@@ -46,6 +71,8 @@ services:
       - "443:443"
     volumes:
       - wp-data:/var/wp/:rw
+    depends_on:
+     - wordpress
     networks:
       nginx-net:
         aliases:
@@ -56,11 +83,26 @@ services:
   #     - "21:21"
   #   volumes:
   #   - wp-data:/var/wp/:rw
-
+secrets:
+  # LOGIN_42:
+  #   external: true
+  WP_DB_NAME:
+    file: ../WP_DB_NAME
+  WP_ADMIN_LOGIN:
+    file: ../WP_ADMIN_LOGIN
+  WP_ADMIN_PASSW:
+    file: ../WP_ADMIN_PASSW
+  WP_GUEST_LOGIN:
+    file: ../WP_GUEST_LOGIN
+  WP_GUEST_PASSW:
+    file: ../WP_GUEST_PASSW
+  
 networks:
   nginx-net:
     driver: bridge
   db-net:
+    driver: bridge
+  redis-net:
     driver: bridge
 
 volumes:
@@ -70,11 +112,11 @@ volumes:
     driver_opts:
       type: 'none'
       o: 'bind'
-      device: /home/${LOGIN_42}/data/db
+      device: /home/ahbasara/data/db # ahbasara -> ${LOGIN_42}
   wp-data:
     name: "wp-volume"
     driver: local
     driver_opts:
       type: 'none'
       o: 'bind'
-      device: /home/${LOGIN_42}/data/wp
+      device: /home/ahbasara/data/wp # ahbasara -> ${LOGIN_42}
