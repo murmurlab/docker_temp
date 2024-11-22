@@ -1,16 +1,44 @@
 name: inception
 
 services:
-  redis:
-    build: ./requirements/redis
+  website:
+    build: ./requirements/bonus/website
+    ports:
+      - "3001:3000"
+    volumes:
+      - website-data:/var/www:rw
+  minecraft:
+    build: ./requirements/bonus/minecraft
+    ports:
+      - "25565:25565"
+  ftp:
+    build:
+      context: ./requirements/bonus/ftp
+      secrets:
+        - WP_ADMIN_PASSW
     volumes:
       - wp-data:/var/wp/:rw
+    ports:
+      - "2121:2121"
+    depends_on:
+      - wordpress
+    restart: always
+  adminer:
+    build: ./requirements/bonus/adminer
+    volumes:
+      - wp-data:/var/wp/:rw
+    ports:
+      - "8000:8000"
+    networks:
+      db-net:
+  redis:
+    build: ./requirements/bonus/redis
     networks:
       redis-net:
         aliases:
           - redis
-    ports:
-     - '6379:6379'
+    # ports:
+    #  - '6379:6379'
   mariadb:
     # hostname: db
     build: ./requirements/mariadb
@@ -106,6 +134,13 @@ networks:
     driver: bridge
 
 volumes:
+  website-data:
+    name: "website-volume"
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: /home/ahbasara/data/www # ahbasara -> ${LOGIN_42}
   db-data:
     name: "db-volume"
     driver: local

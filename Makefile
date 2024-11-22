@@ -23,6 +23,7 @@ all:
 	@echo "===================================program======================================\n"
 	@echo '======='"$$USER"'=======';\
 	sudo mkdir -p /home/$$USER/data/wp;\
+	sudo mkdir -p /home/$$USER/data/www;\
 	sudo mkdir -p /home/$$USER/data/db
 	$(MAKE) up
 

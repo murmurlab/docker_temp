@@ -4,7 +4,7 @@ RUN apk add --no-cache redis
 COPY redis.conf /etc/redis.conf
 COPY object-cache.php /var/wp/wp-content/
 
-EXPOSE 6379
+# EXPOSE 6379
 CMD redis-server --protected-mode no
 
 # RUN apt-get install redis-server php5-redis
